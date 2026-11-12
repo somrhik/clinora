@@ -1,283 +1,210 @@
-# Clinora
+# 🩺 Clinora
 
-**A doctor discovery and appointment booking platform.**
+### A Doctor Discovery & Appointment Booking Platform
 
-Clinora is a web application designed to help patients discover doctors,
-explore consultation options, and manage appointments. Doctors can
-create professional profiles, manage their chambers and availability,
-and handle appointment requests. The platform also includes a
-verification workflow for doctor credentials.
+Discover doctors, explore their profiles, and manage appointments — all in one place.
 
-> **Project status:** Development / initial deployment. Features and
-> workflows are still being tested and improved. Clinora is not a
-> diagnostic tool and does not replace professional medical advice.
+<p align="center">
+  <a href="https://clinora-theta.vercel.app/">
+    🌐 **Live Demo — Clinora**
+  </a>
+</p>
 
-## Overview
+---
 
-Clinora aims to make the process of finding and booking a doctor more
-organised through a single platform.
+## ✨ Overview
 
-### Patient features
+**Clinora** is a doctor discovery and appointment booking platform designed to simplify how patients find healthcare professionals and manage consultations.
 
--   Patient registration and login.
--   Patient profile management.
--   Doctor discovery by name, speciality, and relevant search criteria.
--   Doctor profile and consultation information.
--   Appointment booking and appointment management.
--   Queue token generation for booked appointments.
--   Patient reports support, with access intended to be controlled by
-    the patient.
+The platform connects patients and doctors through an organised system for doctor discovery, professional profiles, appointment scheduling, and doctor verification.
 
-### Doctor features
+## 🚀 Features
 
--   Separate doctor registration and login.
--   Professional profile with qualifications and experience.
--   Medical registration and credential submission.
--   Multiple chamber details and consultation services.
--   Availability and appointment management.
--   Doctor verification workflow.
+### 👤 Patient
+- Patient registration and login.
+- Personal profile management.
+- Search and discover doctors.
+- Explore doctor profiles, specialisations and consultation details.
+- Book and manage appointments.
+- View appointment history.
+- Queue token generation.
+- Patient report management with controlled access.
 
-### Administration
+### 👨‍⚕️ Doctor
+- Separate doctor registration and login.
+- Professional profile management.
+- Qualifications and experience details.
+- Medical credential submission.
+- Multiple chamber management.
+- Consultation services and fee management.
+- Availability and appointment management.
+- Doctor verification workflow.
 
--   Doctor credential review and verification.
--   Administrative oversight of platform records and verification
-    status.
+### 🛡️ Administration
+- Doctor credential review.
+- Doctor verification and approval.
+- Administrative oversight of platform records.
 
-*The exact availability of individual features may vary while
-development and testing continue.*
+## 🛠️ Tech Stack
 
-## Tech Stack
+| Category | Technologies |
+|---|---|
+| Frontend | React, TypeScript, Vite |
+| Routing | React Router |
+| API Integration | Axios |
+| Backend | Python, FastAPI |
+| Database | PostgreSQL |
+| ORM | SQLAlchemy |
+| Validation | Pydantic |
+| Migrations | Alembic |
+| Authentication | JWT |
+| Deployment | Vercel |
 
-### Frontend
+## 📁 Project Structure
 
--   React
--   TypeScript
--   Vite
--   React Router
--   Axios
--   React Hook Form / Zod
--   Lucide React
-
-### Backend
-
--   Python
--   FastAPI
--   SQLAlchemy
--   Pydantic
--   Alembic
--   JWT-based authentication
-
-### Database
-
--   PostgreSQL
-
-## Project Structure
-
-``` text
+```text
 clinora/
+│
 ├── backend/
 │   ├── app/
 │   ├── migrations/
-│   ├── .env.example
-│   └── requirements.txt
+│   ├── requirements.txt
+│   └── .env.example
+│
 ├── frontend/
 │   ├── src/
+│   ├── public/
 │   ├── package.json
 │   └── vite.config.ts
+│
+├── vercel.json
 └── README.md
 ```
 
-## Run Locally
+## ⚙️ Getting Started
 
 ### Prerequisites
 
-Install the following before running the project:
-
--   Python 3.11 or a compatible version supported by the backend
-    dependencies.
--   Node.js and npm.
--   PostgreSQL.
--   Git (optional, for cloning the repository).
+- Python
+- Node.js and npm
+- PostgreSQL
+- Git
 
 ### 1. Clone the repository
 
-``` bash
+```bash
 git clone <YOUR_GITHUB_REPOSITORY_URL>
 cd clinora
 ```
 
-### 2. Configure the backend
+### 2. Backend Setup
 
-Open a terminal in the project directory:
-
-``` bash
+```bash
 cd backend
 ```
 
-Create and activate a virtual environment.
+Create a virtual environment:
 
-**Windows PowerShell:**
-
-``` powershell
+**Windows:**
+```powershell
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
 **macOS / Linux:**
-
-``` bash
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-Install backend dependencies:
+Install dependencies:
 
-``` bash
+```bash
 pip install -r requirements.txt
 ```
 
-Create a `.env` file inside the `backend/` directory, using
-`.env.example` as a reference. Update the values for your local
-PostgreSQL database and other required settings.
-
-Do not commit `.env` or put passwords, secret keys, API keys, or other
-credentials in source control.
+Create a `.env` file inside the backend directory using `.env.example` as a reference. Configure your PostgreSQL connection and required environment variables.
 
 Run database migrations:
 
-``` bash
+```bash
 python -m alembic upgrade head
 ```
 
 Start the backend:
 
-``` bash
+```bash
 uvicorn app.main:app --reload
 ```
 
-The backend will normally be available at:
+Backend API: `http://127.0.0.1:8000`
 
--   API: http://127.0.0.1:8000
--   Swagger documentation: http://127.0.0.1:8000/docs
+API Documentation: `http://127.0.0.1:8000/docs`
 
-### 3. Configure the frontend
+### 3. Frontend Setup
 
-Open a **second terminal** from the project root:
+Open a second terminal:
 
-``` bash
+```bash
 cd frontend
 npm install
-```
-
-Start the Vite development server:
-
-``` bash
 npm run dev
 ```
 
-Vite will print the local frontend URL in the terminal, usually:
+Frontend: `http://localhost:5173`
 
--   http://localhost:5173
+## 🌍 Live Deployment
 
-Keep both the backend and frontend terminals running while using the
-local application.
+Visit the deployed application:
 
-## Environment Configuration
+**🔗 https://clinora-theta.vercel.app/**
 
-The backend reads its configuration from `backend/.env`. Use
-`backend/.env.example` as the source of the required variable names.
+## 🔐 Environment Variables
 
-Typical configuration areas include:
+The backend requires environment-specific configuration for:
 
--   PostgreSQL connection URL.
--   JWT/authentication secrets and token settings.
--   Frontend base URL and allowed CORS origins.
--   Google authentication client ID, if Google sign-in is enabled.
--   SMTP settings, if email-based password reset is enabled.
--   Application timezone.
--   Private upload/storage configuration for doctor documents and
-    patient reports.
+- PostgreSQL database connection.
+- Authentication and security secrets.
+- Frontend URL and CORS configuration.
+- Google authentication (if enabled).
+- SMTP configuration for password reset (if enabled).
+- File storage configuration.
 
-Use strong, unique secrets outside local development. Configure
-production values in your hosting provider's environment-variable
-settings rather than uploading a `.env` file.
+**Important:** Never commit `.env` files, passwords, API keys, authentication secrets, or private user documents to GitHub.
 
-## API Documentation
+## 🧪 Development & Testing
 
-When the backend is running, FastAPI provides interactive API
-documentation at:
+Frontend production build:
 
-``` text
-http://127.0.0.1:8000/docs
-```
-
-Use Swagger UI to inspect available endpoints and test API requests
-during development.
-
-## Testing and Build Checks
-
-### Frontend production build
-
-From the `frontend/` directory:
-
-``` bash
+```bash
+cd frontend
 npm run build
 ```
 
-### Backend
+Backend API testing and interactive documentation are available through FastAPI Swagger UI.
 
-Activate the backend virtual environment and run the checks or tests
-available in the repository. Database-backed tests should use a separate
-test database, not a database containing important development or
-production data.
+## 🔮 Future Improvements
 
-## Deployment
+Clinora is under active development. Planned improvements include:
 
-The application can be deployed as separate frontend, backend, and
-PostgreSQL services. Before deployment:
+- Enhanced doctor discovery and filtering.
+- Improved appointment management.
+- More comprehensive profile management.
+- UI/UX refinements.
+- Additional security and deployment improvements.
 
-1.  Provision a cloud PostgreSQL database.
-2.  Configure backend environment variables securely.
-3.  Run Alembic migrations against the intended cloud database.
-4.  Deploy the FastAPI backend.
-5.  Configure CORS and the frontend API base URL.
-6.  Deploy the React frontend.
-7.  Configure persistent, private storage for uploaded documents and
-    reports.
+## ⚠️ Disclaimer
 
-Do not use temporary application filesystems for documents that must
-remain available after a redeploy or restart.
+Clinora is a doctor discovery and appointment management platform. It does not provide medical diagnosis or replace professional medical advice.
 
-## Privacy and Medical Disclaimer
+The application is currently under development and should not be used to handle real patient medical records until its security, privacy, and compliance requirements have been properly reviewed.
 
-Clinora is intended for doctor discovery and appointment management. It
-does not provide medical diagnosis or emergency care.
-
-Do not upload real patient records or sensitive medical documents to an
-unreviewed demo deployment. Before handling real patient information,
-review authentication, authorisation, access controls, file storage,
-encryption, logging, backups, and applicable privacy and healthcare
-requirements.
-
-In an emergency, contact local emergency services rather than relying on
-this platform.
-
-## Contributing
-
-This project is under active development. Contributions, issue reports,
-and suggestions are welcome.
-
-For changes:
-
-1.  Create a branch for your work.
-2.  Make and test your changes locally.
-3.  Ensure secrets and private data are not included.
-4.  Submit a pull request describing the changes.
-
-## Author
+## 👨‍💻 Author
 
 **Somrhik Banerjee**
 
-------------------------------------------------------------------------
+---
 
-*Clinora --- simplifying doctor discovery and appointment management.*
+<p align="center">
+  💙 Built with passion to make doctor discovery and appointment booking simpler.
+</p>
