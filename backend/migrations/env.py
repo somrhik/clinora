@@ -4,15 +4,15 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-from app.config import settings
-from app.database import Base
+from app.database import Base, engine
 from app import models
 
 config = context.config
+database_url = engine.url.render_as_string(hide_password=False)
 
 config.set_main_option(
     "sqlalchemy.url",
-    settings.database_url.replace("%", "%%")
+    database_url.replace("%", "%%")
 )
 
 if config.config_file_name is not None:
@@ -23,7 +23,7 @@ target_metadata = Base.metadata
 
 def run_migrations_offline():
     context.configure(
-        url=settings.database_url,
+        url=database_url,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
