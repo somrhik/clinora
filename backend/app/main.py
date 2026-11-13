@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from sqlalchemy import select
 
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session, joinedload, selectinload
 
 from app.config import settings
 
@@ -42,7 +42,7 @@ app.add_middleware(CORSMiddleware, allow_origins=[x.strip() for x in settings.co
 
 
 
-@app.get("/health")
+@app.get("/api/health")
 
 def health():
 
@@ -281,6 +281,90 @@ def doctor_profile(user: User = Depends(require_roles("doctor")), db: Session = 
     doctor = cast(Any, db.scalar(select(DoctorProfile).options(joinedload(DoctorProfile.chambers)).where(DoctorProfile.user_id == user.id)))
 
     return {"doctor_id": doctor.id, "name": user.full_name, "email": user.email, "phone": user.phone, "registration_number": doctor.registration_number, "qualifications": doctor.qualifications, "specialisations": doctor.specialisations, "experience_years": doctor.experience_years, "bio": doctor.bio, "graduation_year": doctor.graduation_year, "medical_college": doctor.medical_college, "previous_workplaces": doctor.previous_workplaces.splitlines() if doctor.previous_workplaces else [], "verification_status": doctor.verification_status, "rejection_reason": doctor.rejection_reason, "chambers": [{"id": c.id, "name": c.name, "city": c.city} for c in doctor.chambers]}
+
+@app.get("/api/v1/doctors/{doctor_id}/public")
+def public_doctor_profile(
+    doctor_id: int,
+    db: Session = Depends(get_db)
+):
+    doctor = db.scalar(
+        select(DoctorProfile)
+        .options(
+            joinedload(DoctorProfile.user),
+            selectinload(DoctorProfile.chambers)
+            .selectinload(Chamber.services),
+            selectinload(DoctorProfile.chambers)
+            .selectinload(Chamber.schedules)
+        )
+        .where(DoctorProfile.id == doctor_id)
+    )
+
+    if doctor is None or not doctor.user.is_active:
+        raise HTTPException(404, "Doctor not found")
+
+    if doctor.verification_status != "verified":
+        raise HTTPException(404, "Doctor profile not found")
+
+    return {
+        "doctor_id": doctor.id,
+        "name": doctor.user.full_name,
+        "email": doctor.user.email,
+        "phone": doctor.user.phone,
+        "registration_number": doctor.registration_number,
+        "qualifications": doctor.qualifications,
+        "specialisations": doctor.specialisations,
+        "experience_years": doctor.experience_years,
+        "bio": doctor.bio,
+        "graduation_year": doctor.graduation_year,
+        "medical_college": doctor.medical_college,
+        "previous_workplaces": (
+            doctor.previous_workplaces.splitlines()
+            if doctor.previous_workplaces else []
+        ),
+        "chambers": [
+            {
+                "id": chamber.id,
+                "name": chamber.name,
+                "address": chamber.address,
+                "locality": chamber.locality,
+                "city": chamber.city,
+                "state": chamber.state,
+                "pin_code": chamber.pin_code,
+                "latitude": chamber.latitude,
+                "longitude": chamber.longitude,
+                "services": [
+                    {
+                        "id": service.id,
+                        "name": service.name,
+                        "description": service.description,
+                        "fee": float(service.fee),
+                        "duration_minutes": service.duration_minutes
+                    }
+                    for service in chamber.services
+                    if service.active
+                ],
+                "availability": [
+                    {
+                        "id": schedule.id,
+                        "weekday": schedule.weekday,
+                        "start_time": str(schedule.start_time),
+                        "end_time": str(schedule.end_time),
+                        "break_start": (
+                            str(schedule.break_start)
+                            if schedule.break_start else None
+                        ),
+                        "break_end": (
+                            str(schedule.break_end)
+                            if schedule.break_end else None
+                        )
+                    }
+                    for schedule in chamber.schedules
+                    if schedule.active
+                ]
+            }
+            for chamber in doctor.chambers
+        ]
+    }
 
 
 

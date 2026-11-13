@@ -1,27 +1,82 @@
 
-# Environment variables and secrets
+# ==========================================
+# ENVIRONMENT VARIABLES AND SECRETS
+# ==========================================
 .env
 .env.*
 !.env.example
 
-# Python
+# ==========================================
+# PYTHON / FASTAPI BACKEND
+# ==========================================
 .venv/
 venv/
+env/
 __pycache__/
 *.py[cod]
+*$py.class
+
+# Testing and coverage
 .pytest_cache/
 .mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
 
-# Frontend
+# Build and distribution
+build/
+dist/
+*.egg-info/
+
+# Private files and uploads
+backend/private_uploads/
+private_uploads/
+uploads/
+
+# Local admin account creation script
+backend/create_admin.py
+
+# ==========================================
+# REACT / VITE FRONTEND
+# ==========================================
 node_modules/
+frontend/node_modules/
+frontend/dist/
 dist/
 .vite/
+*.tsbuildinfo
 
-# IDE and OS
+# ==========================================
+# IDE AND EDITOR FILES
+# ==========================================
 .vscode/
 .idea/
-.DS_Store
-Thumbs.db
+*.suo
+*.user
+*.sln.docstates
 
-# Private uploads
-uploads/
+# ==========================================
+# OPERATING SYSTEM FILES
+# ==========================================
+.DS_Store
+.DS_Store?
+Thumbs.db
+Desktop.ini
+
+# ==========================================
+# LOGS AND TEMPORARY FILES
+# ==========================================
+*.log
+logs/
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# ==========================================
+# LOCAL DATABASE FILES
+# ==========================================
+*.sqlite
+*.sqlite3
+*.db
